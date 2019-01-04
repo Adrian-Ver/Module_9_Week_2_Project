@@ -1,0 +1,29 @@
+---
+title: "Europe Capitals Leaflet"
+author: "Adrian-Ver Federizo"
+date: "January 4, 2019"
+output: html_document
+---
+
+## A short html page using R Markdown and the 'leaflet' package
+This page plots the coordinates of the capitals of European countries using the 'leaflet' package in R. The codes for generating the map will be as follows:
+```{r, message=FALSE}
+library(leaflet)
+library(dplyr)
+countries <- read.csv("countries.csv", header = T)
+head(countries)
+```
+Data was obtained from http://techslides.com/list-of-countries-and-capitals where we can observe the coordinates of the capitals of most of the countries of the world, if not all. We select Europe for easier presentation since they are more compact, 
+```{r}
+europe <- countries %>% 
+    filter(Continent.Name == "Europe") %>% 
+    select(Country.Name, Capital.Name,Capital.Latitude, Capital.Longitude)
+```
+then proceed with plotting using the leaflet() function:
+```{r cars}
+(europe_map <- europe %>% 
+        leaflet() %>% 
+        addTiles() %>%  
+        addMarkers(europe$Capital.Longitude, europe$Capital.Latitude))
+
+```
